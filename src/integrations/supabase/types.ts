@@ -14,6 +14,148 @@ export type Database = {
   }
   public: {
     Tables: {
+      bot_activity_logs: {
+        Row: {
+          action: string
+          bot_id: string
+          created_at: string
+          details: Json | null
+          earnings: number | null
+          id: string
+        }
+        Insert: {
+          action: string
+          bot_id: string
+          created_at?: string
+          details?: Json | null
+          earnings?: number | null
+          id?: string
+        }
+        Update: {
+          action?: string
+          bot_id?: string
+          created_at?: string
+          details?: Json | null
+          earnings?: number | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bot_activity_logs_bot_id_fkey"
+            columns: ["bot_id"]
+            isOneToOne: false
+            referencedRelation: "bots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bot_rentals: {
+        Row: {
+          bot_id: string
+          created_at: string
+          earnings_generated: number
+          end_date: string
+          id: string
+          owner_id: string
+          price_per_day: number
+          renter_id: string
+          start_date: string
+          status: Database["public"]["Enums"]["rental_status"]
+          stripe_payment_id: string | null
+          total_price: number
+          updated_at: string
+        }
+        Insert: {
+          bot_id: string
+          created_at?: string
+          earnings_generated?: number
+          end_date: string
+          id?: string
+          owner_id: string
+          price_per_day: number
+          renter_id: string
+          start_date: string
+          status?: Database["public"]["Enums"]["rental_status"]
+          stripe_payment_id?: string | null
+          total_price: number
+          updated_at?: string
+        }
+        Update: {
+          bot_id?: string
+          created_at?: string
+          earnings_generated?: number
+          end_date?: string
+          id?: string
+          owner_id?: string
+          price_per_day?: number
+          renter_id?: string
+          start_date?: string
+          status?: Database["public"]["Enums"]["rental_status"]
+          stripe_payment_id?: string | null
+          total_price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bot_rentals_bot_id_fkey"
+            columns: ["bot_id"]
+            isOneToOne: false
+            referencedRelation: "bots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bots: {
+        Row: {
+          config: Json | null
+          created_at: string
+          description: string | null
+          id: string
+          is_available_for_rent: boolean
+          last_active_at: string | null
+          name: string
+          owner_id: string | null
+          rental_price_per_day: number | null
+          status: Database["public"]["Enums"]["bot_status"]
+          total_earnings: number
+          total_tasks_completed: number
+          type: Database["public"]["Enums"]["bot_type"]
+          updated_at: string
+        }
+        Insert: {
+          config?: Json | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_available_for_rent?: boolean
+          last_active_at?: string | null
+          name: string
+          owner_id?: string | null
+          rental_price_per_day?: number | null
+          status?: Database["public"]["Enums"]["bot_status"]
+          total_earnings?: number
+          total_tasks_completed?: number
+          type: Database["public"]["Enums"]["bot_type"]
+          updated_at?: string
+        }
+        Update: {
+          config?: Json | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_available_for_rent?: boolean
+          last_active_at?: string | null
+          name?: string
+          owner_id?: string | null
+          rental_price_per_day?: number | null
+          status?: Database["public"]["Enums"]["bot_status"]
+          total_earnings?: number
+          total_tasks_completed?: number
+          type?: Database["public"]["Enums"]["bot_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       payout_rules: {
         Row: {
           created_at: string
@@ -245,8 +387,11 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      bot_status: "active" | "idle" | "paused" | "error" | "maintenance"
+      bot_type: "trading" | "content" | "service" | "data" | "automation"
       payout_frequency: "daily" | "weekly" | "monthly" | "manual"
       payout_status: "pending" | "processing" | "completed" | "failed"
+      rental_status: "active" | "pending" | "expired" | "cancelled"
       transaction_status: "pending" | "completed" | "failed" | "cancelled"
       transaction_type:
         | "bot_rental"
@@ -383,8 +528,11 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      bot_status: ["active", "idle", "paused", "error", "maintenance"],
+      bot_type: ["trading", "content", "service", "data", "automation"],
       payout_frequency: ["daily", "weekly", "monthly", "manual"],
       payout_status: ["pending", "processing", "completed", "failed"],
+      rental_status: ["active", "pending", "expired", "cancelled"],
       transaction_status: ["pending", "completed", "failed", "cancelled"],
       transaction_type: [
         "bot_rental",

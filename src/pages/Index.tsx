@@ -14,6 +14,12 @@ const Index = () => {
               ⚡ BLACK SULTAN OS
             </h1>
             <div className="flex items-center gap-4">
+              <Link to="/bots">
+                <Button variant="outline" className="glow-button">
+                  <Bot className="w-4 h-4 mr-2" />
+                  Bots
+                </Button>
+              </Link>
               <Link to="/payouts">
                 <Button variant="outline" className="glow-button">
                   <Banknote className="w-4 h-4 mr-2" />
