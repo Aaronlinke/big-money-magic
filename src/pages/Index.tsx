@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, Wallet, Bot, Shield, TrendingUp, AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Activity, Wallet, Bot, Shield, TrendingUp, AlertTriangle, Banknote } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -12,6 +14,12 @@ const Index = () => {
               ⚡ BLACK SULTAN OS
             </h1>
             <div className="flex items-center gap-4">
+              <Link to="/payouts">
+                <Button variant="outline" className="glow-button">
+                  <Banknote className="w-4 h-4 mr-2" />
+                  Payouts
+                </Button>
+              </Link>
               <div className="px-4 py-2 rounded-lg bg-card border border-primary/30 glow-cyan">
                 <span className="text-sm text-muted-foreground">Status:</span>
                 <span className="ml-2 text-success font-bold">ONLINE</span>
