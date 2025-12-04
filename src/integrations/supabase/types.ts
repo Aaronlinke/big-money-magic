@@ -14,7 +14,229 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      payout_rules: {
+        Row: {
+          created_at: string
+          description: string | null
+          founder_percentage: number
+          id: string
+          is_active: boolean
+          is_immutable: boolean
+          name: string
+          system_percentage: number
+          transaction_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          founder_percentage?: number
+          id?: string
+          is_active?: boolean
+          is_immutable?: boolean
+          name: string
+          system_percentage?: number
+          transaction_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          founder_percentage?: number
+          id?: string
+          is_active?: boolean
+          is_immutable?: boolean
+          name?: string
+          system_percentage?: number
+          transaction_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payout_settings: {
+        Row: {
+          auto_payout_enabled: boolean
+          created_at: string
+          frequency: Database["public"]["Enums"]["payout_frequency"]
+          id: string
+          minimum_amount: number
+          updated_at: string
+          wallet_id: string
+        }
+        Insert: {
+          auto_payout_enabled?: boolean
+          created_at?: string
+          frequency?: Database["public"]["Enums"]["payout_frequency"]
+          id?: string
+          minimum_amount?: number
+          updated_at?: string
+          wallet_id: string
+        }
+        Update: {
+          auto_payout_enabled?: boolean
+          created_at?: string
+          frequency?: Database["public"]["Enums"]["payout_frequency"]
+          id?: string
+          minimum_amount?: number
+          updated_at?: string
+          wallet_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_settings_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: true
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payouts: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          failure_reason: string | null
+          id: string
+          processed_at: string | null
+          scheduled_at: string | null
+          status: Database["public"]["Enums"]["payout_status"]
+          stripe_payout_id: string | null
+          stripe_transfer_id: string | null
+          wallet_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          failure_reason?: string | null
+          id?: string
+          processed_at?: string | null
+          scheduled_at?: string | null
+          status?: Database["public"]["Enums"]["payout_status"]
+          stripe_payout_id?: string | null
+          stripe_transfer_id?: string | null
+          wallet_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          failure_reason?: string | null
+          id?: string
+          processed_at?: string | null
+          scheduled_at?: string | null
+          status?: Database["public"]["Enums"]["payout_status"]
+          stripe_payout_id?: string | null
+          stripe_transfer_id?: string | null
+          wallet_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payouts_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          metadata: Json | null
+          related_transaction_id: string | null
+          status: Database["public"]["Enums"]["transaction_status"]
+          stripe_payment_id: string | null
+          type: Database["public"]["Enums"]["transaction_type"]
+          wallet_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          related_transaction_id?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          stripe_payment_id?: string | null
+          type: Database["public"]["Enums"]["transaction_type"]
+          wallet_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          related_transaction_id?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          stripe_payment_id?: string | null
+          type?: Database["public"]["Enums"]["transaction_type"]
+          wallet_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_related_transaction_id_fkey"
+            columns: ["related_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wallets: {
+        Row: {
+          balance: number
+          created_at: string
+          currency: string
+          id: string
+          is_founder_wallet: boolean
+          is_system_wallet: boolean
+          name: string
+          stripe_account_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          is_founder_wallet?: boolean
+          is_system_wallet?: boolean
+          name: string
+          stripe_account_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          is_founder_wallet?: boolean
+          is_system_wallet?: boolean
+          name?: string
+          stripe_account_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +245,17 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      payout_frequency: "daily" | "weekly" | "monthly" | "manual"
+      payout_status: "pending" | "processing" | "completed" | "failed"
+      transaction_status: "pending" | "completed" | "failed" | "cancelled"
+      transaction_type:
+        | "bot_rental"
+        | "plugin_sale"
+        | "membership"
+        | "license"
+        | "payout"
+        | "founder_provision"
+        | "system_fee"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +382,19 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      payout_frequency: ["daily", "weekly", "monthly", "manual"],
+      payout_status: ["pending", "processing", "completed", "failed"],
+      transaction_status: ["pending", "completed", "failed", "cancelled"],
+      transaction_type: [
+        "bot_rental",
+        "plugin_sale",
+        "membership",
+        "license",
+        "payout",
+        "founder_provision",
+        "system_fee",
+      ],
+    },
   },
 } as const
