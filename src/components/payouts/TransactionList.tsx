@@ -68,10 +68,15 @@ export const TransactionList = () => {
   return (
     <Card className="gradient-border">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-accent">
-          <Activity className="w-5 h-5" />
-          Recent Transactions
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2 text-accent">
+            <Activity className="w-5 h-5" />
+            Recent Transactions
+          </CardTitle>
+          <span className="text-xs px-2 py-1 rounded bg-warning/20 text-warning border border-warning/30">
+            ⚠️ DEMO DATA
+          </span>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
